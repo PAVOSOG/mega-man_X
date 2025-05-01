@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "enemies.hpp"
-#include "player.hpp" 
+#include "screen.hpp"
 
 using namespace std;
 using namespace sf;
@@ -16,19 +16,18 @@ Sprite level;
 Sprite level2;
 Sprite background;
 View camera1(Vector2f(0, 0), Vector2f(window.getSize().x, window.getSize().y));
-
-enum Screens {
-    MainMenu, Pause, EndScreen, GamePlay1, GamePlay2
-};
+float gameOverTimer=0.0;
 void Update();
 void Draw();
 void Start();
-void UpdateGamePlay1();
-Screens screen = GamePlay1;
+void UpdateGamePlay();
+Screens screen = Screens::MainMenu;
 
+Font stopfont;
 float deltaTime;
 float deltaTimeEnemy;
 Music music;
+Music music_game_over;
 
 int main() {
     Start();
@@ -51,6 +50,8 @@ int main() {
                     screen = Screens::GamePlay1;
                 }
             }
+            if (screen == Screens::MainMenu)
+            UpdateMainScreen(window, event, screen); 
         }
         Update();
         Draw();
@@ -64,6 +65,8 @@ void Start() {
     levelBg.loadFromFile("playerAnimations/foreground1.png");
     level2Bg.loadFromFile("playerAnimations/foreground2.png");
     music.openFromFile("playerAnimations/bg music.mp3");
+    music_game_over.openFromFile("playerAnimations/gameover.mp3");
+    stopfont.loadFromFile("playerAnimations/main-menu-font.otf");
 
     background.setScale(5, 5);
     background.setPosition(0, 0);
@@ -72,7 +75,7 @@ void Start() {
     level.setPosition(0, 0);
     level.setTexture(levelBg);
 
-    level2.setScale(500, 500);
+    level2.setScale(3, 3);
     level2.setPosition(0, 0);
     level2.setTexture(level2Bg);
 
@@ -82,25 +85,27 @@ void Start() {
 
     player.start(); 
     StartEnemies();
+    StartMainScreen(window);
 }
 
-void UpdateGamePlay1() {
+void UpdateGamePlay() {
     std::cout << player.getPosition().x << " " << player.getPosition().y << endl;
     window.setView(camera1);
     camera1.setCenter({ player.getPosition().x, (float)window.getSize().y / 2 });
-
-    player.update(deltaTime, camera1); 
-
+    player.update(deltaTime, camera1,screen);
     UpdateEnemies(deltaTimeEnemy);
+    if (player.isDead)
+        screen = Screens::GameOver;
 }
 
 void Update() {
-    if (screen == Screens::GamePlay1) {
-        UpdateGamePlay1();
-    }
+    if (screen == Screens::GamePlay1||screen==Screens::GamePlay2) {
+        UpdateGamePlay();
+       
+    } 
 }
 
-void DrawGamePlay1() {
+void DrawGamePlay() {
     window.clear();
     window.draw(background);
     if (screen == Screens::GamePlay1) {
@@ -112,14 +117,32 @@ void DrawGamePlay1() {
     DrawEnemies(window);
 }
 
-void DrawPauseMenu() {
-    DrawGamePlay1(); // Draw the game elements behind the pause menu
+void DrawGameOver() {
+    DrawGamePlay(); // Draw the game elements behind the pause menu
     RectangleShape pauseMenu(Vector2f(window.getSize()));
     pauseMenu.setFillColor(Color(0, 0, 0, 128));
     window.draw(pauseMenu);
-    Font font;
-    font.loadFromFile("playerAnimations/main-menu-font.otf");
-    Text pauseText("PAUSED", font, 72);
+    Text pauseText("Game Over", stopfont, 72);
+    pauseText.setFillColor(Color::White);
+    pauseText.setPosition(camera1.getCenter().x - pauseText.getGlobalBounds().width / 2,
+                          camera1.getCenter().y - pauseText.getGlobalBounds().height / 2);
+    pauseMenu.setPosition(camera1.getCenter().x - pauseText.getGlobalBounds().width / 2,
+                          camera1.getCenter().y - pauseText.getGlobalBounds().height / 2);
+    window.draw(pauseText);
+    music.stop();
+    music_game_over.play();
+    gameOverTimer+=deltaTime;
+    if (gameOverTimer>=2)
+    {
+        window.close();
+    }
+}
+void DrawPauseMenu() {
+    DrawGamePlay(); // Draw the game elements behind the pause menu
+    RectangleShape pauseMenu(Vector2f(window.getSize()));
+    pauseMenu.setFillColor(Color(0, 0, 0, 128));
+    window.draw(pauseMenu);
+    Text pauseText("PAUSED", stopfont, 72);
     pauseText.setFillColor(Color::White);
     pauseText.setPosition(camera1.getCenter().x - pauseText.getGlobalBounds().width / 2,
                           camera1.getCenter().y - pauseText.getGlobalBounds().height / 2);
@@ -132,10 +155,17 @@ void Draw() {
     window.clear();
     switch(screen) {
         case Screens::GamePlay1:
-            DrawGamePlay1();
+        case Screens::GamePlay2:
+            DrawGamePlay();
             break;
         case Screens::Pause:
             DrawPauseMenu();
+            break;
+        case Screens::MainMenu:
+            DrawMainScreen(window);
+            break;
+        case Screens::GameOver:
+            DrawGameOver();
             break;
     }
 

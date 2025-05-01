@@ -137,10 +137,13 @@
     <ClCompile Include="enemies.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="screen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enemies.hpp" />
     <ClInclude Include="player.hpp" />
+    <ClInclude Include="screen.hpp" />
+    <ClInclude Include="screens.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

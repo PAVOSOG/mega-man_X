@@ -7,6 +7,14 @@ struct Bullet {
     Sprite shape;
     Vector2f velocity;
 };
+enum Screens
+{
+    MainMenu,
+    Pause,
+    GameOver,
+    GamePlay1,
+    GamePlay2
+};
 
 enum Direction { Right, Left };
 
@@ -16,6 +24,8 @@ struct Player {
     bool isjumping;
     bool isSpawning;
     bool canShoot;
+    int health;
+    bool isDead;
     Direction playerDirection;
     int animationIndex;
     float idleAnimationTimer;
@@ -26,6 +36,7 @@ struct Player {
     float shootingTimer;
     float speedY;
     int playersize;
+    bool isImmune;
     Sprite playerSprite;
     Texture idleTexture;
     Texture walkTexture;
@@ -40,9 +51,9 @@ struct Player {
     void start();
     void loadTextures();
     void init();
-    void update(float& deltaTime, const View &view);
+    void update(float& deltaTime, View &view, Screens &screen);
     void draw(RenderWindow &window);
-    void playerMouvement(float& deltaTime);
+    void playerMouvement(float& deltaTime, Screens &screen, View &view);
     void playerAnimation(float& deltaTime);
     void spawnAnimation(float& deltaTime);
     void shoot(Vector2f playerPosition);

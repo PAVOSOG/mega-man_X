@@ -17,6 +17,8 @@ void Player::start() {
     isjumping = false;
     isSpawning = true;
     canShoot = true;
+    health = 6;
+    isDead = false;
     playerDirection = Direction::Right;
     animationIndex = 0;
     idleAnimationTimer = 0.0f;
@@ -25,6 +27,7 @@ void Player::start() {
     shootAnimationTimer = 0.0f;
     spawnTimer = 0.0f;
     shootingTimer = 0.0f;
+    isImmune = false;
     speedY = 0.0f;
     playersize = 3;
     playerSprite.setPosition(250,315);
@@ -51,18 +54,18 @@ void Player::init() {
     playerSprite.setTextureRect(IntRect(0, 0, 51, 51));
 }
 
-void Player::update(float& deltaTime, const View &view) {
+void Player::update(float& deltaTime, View &view, Screens &screen) {
     if (isSpawning) {
         spawnAnimation(deltaTime);
     } else {
-        playerMouvement(deltaTime);
+        playerMouvement(deltaTime, screen, view);
         shooting();
         playerAnimation(deltaTime);
         updateBullets(deltaTime, view);
     }
 }
 
-void Player::playerMouvement(float& deltaTime) {
+void Player::playerMouvement(float& deltaTime, Screens &screen, View &view) {
     ismoving = false;
     if (Keyboard::isKeyPressed(Keyboard::Right)&& playerSprite.getPosition().x<=8490) {
         playerSprite.move(5, 0);
@@ -89,8 +92,8 @@ void Player::playerMouvement(float& deltaTime) {
     if (playerSprite.getPosition().x >= 7030) floor = 2300;
 
     if (playerSprite.getPosition().x >= 7140) floor = 255;
-    if (playerSprite.getPosition().x >= 7130 && playerSprite.getPosition().x <= 7030 && playerSprite.getPosition().y > 255 || playerSprite.getPosition().x >= 3945 && playerSprite.getPosition().x <= 4045 && playerSprite.getPosition().y > 255 || playerSprite.getPosition().y > 315 && playerSprite.getPosition().x >= 2430 && playerSprite.getPosition().x <= 2525) {
-        // gameover
+    if (playerSprite.getPosition().x >= 7130 && playerSprite.getPosition().x <= 7030 && playerSprite.getPosition().y > 320 || playerSprite.getPosition().x >= 3945 && playerSprite.getPosition().x <= 4045 && playerSprite.getPosition().y > 320 || playerSprite.getPosition().y > 380 && playerSprite.getPosition().x >= 2430 && playerSprite.getPosition().x <= 2525) {
+        screen = Screens::GameOver;
     }
 
     if (playerSprite.getPosition().y >= floor) {
