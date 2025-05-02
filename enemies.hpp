@@ -3,14 +3,15 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include "player.hpp"
 
 using namespace std;
 using namespace sf;
 
 
-void UpdateEnemies(float deltaTime);
-void DrawEnemies(RenderWindow &window);
-void StartEnemies();
+void UpdateEnemies(float deltaTime, Screens screen);
+void DrawEnemies(RenderWindow &window, Screens screen);
+void StartEnemies(Screens screen);
 
 // Structures
 struct BDV {
@@ -43,6 +44,6 @@ struct GunVolt {
 };
 
 extern BDV ball_de_voux;
-extern Jamminger jamminger;
+extern Jamminger jamminger[3];
 extern GunVolt gunvolt;
 

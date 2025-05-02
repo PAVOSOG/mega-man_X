@@ -1,19 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "screen.hpp"
 
 using namespace sf;
 
 struct Bullet {
     Sprite shape;
     Vector2f velocity;
-};
-enum Screens
-{
-    MainMenu,
-    Pause,
-    GameOver,
-    GamePlay1,
-    GamePlay2
 };
 
 enum Direction { Right, Left };

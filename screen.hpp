@@ -1,7 +1,16 @@
 #include <SFML/Graphics.hpp>
-#include "player.hpp"
 
 using namespace sf;
+
+enum Screens
+{
+    MainMenu,
+    Pause,
+    GameOver,
+    GamePlay1,
+    GamePlay2,
+    Victory,
+};
 
 void StartMainScreen(RenderWindow &window);
 void DrawMainScreen(RenderWindow &window);

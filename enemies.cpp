@@ -15,19 +15,30 @@ using namespace sf;
 const float bdvframe = 0.1f;
 float damageTimeframe = 2.0f;
 float damageTimer = 0;
+
+Screens oldScreen = Screens::MainMenu;
+
 struct BDV
 {
     Sprite shape;
-    Texture walk; 
+    Texture walk;
     int col = 0;
-    float bdvmovetimer = 0;
-    bool isDead = false;
-    int health = 4;
-    int startX = 0;
-    int startY = 0;
-    int damage = 1;
+    float bdvmovetimer;
+    bool isDead;
+    int health;
+    int startX;
+    int startY;
+    int damage;
     void start(int x, int y)
     {
+        col = 0;
+        bdvmovetimer = 0;
+        isDead = false;
+        health = 4;
+        startX = 0;
+        startY = 0;
+        damage = 1;
+
         startX = x;
         startY = y;
         walk.loadFromFile("enemies/Ball De Voux.png");
@@ -41,39 +52,47 @@ struct BDV
         {
             return;
         }
-        if (player.getPosition().x >= shape.getPosition().x - 1100)
-        {
-            shape.setTexture(walk);
+        if (right)
 
-            bdvmovetimer += deltaTime;
-            if (bdvmovetimer >= bdvframe)
+            if (player.getPosition().x >= shape.getPosition().x - 1100)
+
             {
-                bdvmovetimer = 0;
-                shape.setTextureRect(IntRect(col * 50, 66, 50, 66));
+                shape.setTexture(walk);
 
-                col = (col + 1) % 5;
+                bdvmovetimer += deltaTime;
+                if (bdvmovetimer >= bdvframe)
+                {
+                    bdvmovetimer = 0;
+                    shape.setTextureRect(IntRect(col * 50, 66, 50, 66));
+
+                    col = (col + 1) % 5;
+                }
+                if (shape.getPosition().x > 252)
+                    shape.move(-2, 0);
             }
-            if (ball_de_voux.shape.getPosition().x > 252)
-                shape.move(-2, 0);
-
-            
-        }
     }
-} ball_de_voux;
+};
 struct Jamminger
 {
     Sprite shape;
     Texture attack;
     Vector2f velocity;
-    int damage = 3;
+    int damage;
     int yCord;
-    int speed = 1;
-    int col = 0;
-    bool isDead = false;
-    int health = 4;
-    int startX = 0, startY = 0;
+    int speed;
+    int col;
+    bool isDead;
+    int health;
+    int startX, startY;
     void start(int x, int y)
     {
+        damage = 3;
+        yCord;
+        speed = 1;
+        col = 0;
+        isDead = false;
+        health = 4;
+        startX = 0, startY = 0;
         attack.loadFromFile("enemies/flying enemy.png");
         shape.setScale(4, 4);
         yCord = rand() % 400;
@@ -107,18 +126,24 @@ struct Jamminger
             col = (col + 1) % 5;
         }
     }
-} jamminger;
+};
+
+
 struct GunVolt
 {
     Sprite shape;
     Texture gettingReady;
     Texture attack;
-    int damage = 3;
-    int col = 0;
-    bool isDead = false;
-    int health = 4;
+    int damage;
+    int col;
+    bool isDead;
+    int health;
     void start(int x, int y)
     {
+        damage = 3;
+        col = 0;
+        isDead = false;
+        health = 4;
         gettingReady.loadFromFile("enemies/gun volt1.png");
         attack.loadFromFile("enemies/gun volt2.png");
         shape.setScale(5, 5);
@@ -140,7 +165,7 @@ struct GunVolt
         shape.setTextureRect(IntRect(col * 50, 0, 50, 65));
         col = (col + 1) % 7;*/
     }
-} gunvolt;
+};
 
 struct BOSS
 {
@@ -148,17 +173,25 @@ struct BOSS
     Texture flyTexture;
     Texture attackTexture;
     Texture deadTexture;
-    int col = 0;
-    int row = 0;
-    bool isFlying = true;
-    bool isAttacking = false;
-    bool isDead = false;
-    int health = 4;
-    bool remove = false;
-    int damage = 3;
+    int col;
+    int row;
+    bool isFlying;
+    bool isAttacking;
+    bool isDead;
+    int health;
+    bool remove;
+    int damage;
 
     void start(int x, int y)
     {
+        col = 0;
+        row = 0;
+        isFlying = true;
+        isAttacking = false;
+        isDead = false;
+        health = 4;
+        remove = false;
+        damage = 3;
         flyTexture.loadFromFile("enemies/boss flying.png");
         shape.setScale(3.5, 3.5);
         shape.setPosition(x, y);
@@ -213,15 +246,68 @@ struct BOSS
         if (shape.getPosition().y < 315)
             shape.move(0, 3);
     }
-} boss;
-void StartEnemies()
-{
-    ball_de_voux.start(2400, 200);
-    jamminger.start(3945, 0);
-    gunvolt.start(6790, 200);
-    // boss.start(500, 200);
-}
+};
 
+/////////////////////////// Enemies //////////////////////////////////////////////////////////
+
+Jamminger jamminger[7];
+const int jammingerCountV1 = 2;
+const int jammingerCountV2 = 7;
+Vector2f jammingerPosV1[jammingerCountV1] = {{3945, 0}, {3900, 0}};
+Vector2f jammingerPosV2[jammingerCountV2] = {{3945, 0}, {3900, 0}, {5500, 0}, {6700, 0}, {6980, 0}, {7530, 0}, {7995, 0}};
+
+BDV ball_de_voux[5];
+const int ball_de_vouxCountV1 = 2;
+const int ball_de_vouxCountV2 = 5;
+Vector2f ball_de_vouxPos[ball_de_vouxCountV1] = {{2400, 200}, {2100, 200}};
+Vector2f ball_de_vouxPosV2[ball_de_vouxCountV2] = {{}, {}, {}, {}, {}};
+
+GunVolt gunvolt[3];
+const int gunvoltCountV1 = 1;
+const int gunvoltCountV2 = 2;
+Vector2f gunvoltPosV1[gunvoltCountV1] = {{8470, 10}};
+Vector2f gunvoltPosV2[gunvoltCountV2] = {{}, {}};
+
+BOSS boss;
+Vector2f bossPos = {500, 200};
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+int ball_de_vouxCount;
+int jammingerCount;
+int gunvoltCount;
+
+void StartEnemies(Screens screen)
+{
+    if (screen == Screens::GamePlay1)
+    {
+        ball_de_vouxCount = ball_de_vouxCountV1;
+        jammingerCount = jammingerCountV1;
+        gunvoltCount = gunvoltCountV1;
+    }
+    else if (screen == Screens::GamePlay2)
+    {
+        ball_de_vouxCount = ball_de_vouxCountV2;
+        jammingerCount = jammingerCountV2;
+        gunvoltCount = gunvoltCountV2;
+    }
+    for (int i = 0; i < ball_de_vouxCount; i++)
+    {
+        ball_de_voux[i].start(ball_de_vouxPos[i].x, ball_de_vouxPos[i].y);
+    }
+    for (int i = 0; i < jammingerCount; i++)
+    {
+        jamminger[i].start(jammingerPosV1[i].x, jammingerPosV1[i].y);
+    }
+    for (int i = 0; i < gunvoltCount; i++)
+    {
+        gunvolt[i].start(gunvoltPosV1[i].x, gunvoltPosV1[i].y);
+    }
+    if (screen == Screens::GamePlay2)
+    {
+        boss.start(500, 200);
+    }
+}
 bool updateEnemiesColor(int bulletIdx, int &health, Vector2f position, bool &isDead, Sprite &shape)
 {
     if (isDead)
@@ -263,13 +349,13 @@ bool updateEnemiesColor(int bulletIdx, int &health, Vector2f position, bool &isD
     }
     return out;
 }
-void checkPlayerHealth(int damage, Sprite shape)
+void checkPlayerHealth(int damage, Sprite shape, bool isdead)
 {
-    if (player.isImmune)
+    if (player.isImmune || isdead)
     {
         return;
-    } 
-    //cout << player.health << endl;
+    }
+    // cout << player.health << endl;
     Vector2f enemyPos = shape.getPosition();
     FloatRect enemyBounds = shape.getGlobalBounds();
     float offsetX = enemyBounds.width / 2.0f;
@@ -284,48 +370,93 @@ void checkPlayerHealth(int damage, Sprite shape)
         player.isDead = true;
     }
     player.isImmune = true;
-    damageTimer=0;
+    damageTimer = 0;
 }
-void UpdateEnemies(float deltaTime)
-{   
-    damageTimer+=deltaTime;
-    if (damageTimeframe<=damageTimer)  
+
+void UpdateEnemies(float deltaTime, Screens screen)
+{
+    if (oldScreen != screen)
+    {
+        oldScreen = screen;
+        StartEnemies(screen);
+    }
+
+    damageTimer += deltaTime;
+    if (damageTimeframe <= damageTimer)
     {
         player.isImmune = false;
     }
-    checkPlayerHealth(ball_de_voux.damage,ball_de_voux.shape);
-    checkPlayerHealth(jamminger.damage, jamminger.shape);
-    checkPlayerHealth(gunvolt.damage, gunvolt.shape);
-    // checkPayerHealth(boss.damage, boss.shape);
 
-    for (int i = 0; i < player.bullets.size(); i++)
+    for (int i = 0; i < ball_de_vouxCount; i++)
     {
-        if (updateEnemiesColor(i, ball_de_voux.health, ball_de_voux.shape.getPosition(), ball_de_voux.isDead, ball_de_voux.shape))
-            continue;
-        if (updateEnemiesColor(i, jamminger.health, jamminger.shape.getPosition(), jamminger.isDead, jamminger.shape))
-            continue;
-        if (updateEnemiesColor(i, gunvolt.health, gunvolt.shape.getPosition(), gunvolt.isDead, gunvolt.shape))
-            continue;
-        // if (updateEnemiesColor(i, boss.health, boss.shape.getPosition(), boss.isDead, boss.shape))
-        //     continue;
+        checkPlayerHealth(ball_de_voux[i].damage, ball_de_voux[i].shape, ball_de_voux[i].isDead);
+        ball_de_voux[i].update(deltaTime);
     }
-    boss.update();
-    cout<<damageTimer<<"\n";
-    //cout << "boss position: " << boss.shape.getPosition().x << " " << boss.shape.getPosition().y << endl;
-    ball_de_voux.update(deltaTime);
-    jamminger.update();
-    gunvolt.update();
+    for (int i = 0; i < jammingerCount; i++)
+    {
+        checkPlayerHealth(jamminger[i].damage, jamminger[i].shape, jamminger[i].isDead);
+        jamminger[i].update();
+    }
+    for (int i = 0; i < gunvoltCount; i++)
+    {
+        checkPlayerHealth(gunvolt[i].damage, gunvolt[i].shape, gunvolt[i].isDead);
+        gunvolt[i].update();
+    }
+    if (screen == Screens::GamePlay2)
+    {
+        checkPlayerHealth(boss.damage, boss.shape, boss.isDead);
+        boss.update();
+    }
+    for (int j = 0; j < player.bullets.size(); j++)
+    {
+        bool shouldBreak = false;
+        // BDV
+        for (int i = 0; i < ball_de_vouxCount; i++)
+        {
+            shouldBreak = updateEnemiesColor(j, ball_de_voux[i].health, ball_de_voux[i].shape.getPosition(), ball_de_voux[i].isDead, ball_de_voux[i].shape);
+            if (shouldBreak)
+                break;
+        }
+        if (shouldBreak)
+            continue;
 
+        // Jamminger
+        for (int i = 0; i < jammingerCount; i++)
+        {
+            shouldBreak = updateEnemiesColor(j, jamminger[i].health, jamminger[i].shape.getPosition(), jamminger[i].isDead, jamminger[i].shape);
+            if (shouldBreak)
+                break;
+        }
+        if (shouldBreak)
+            continue;
+
+        // GunVolt
+        for (int i = 0; i < gunvoltCount; i++)
+        {
+            shouldBreak = updateEnemiesColor(j, gunvolt[i].health, gunvolt[i].shape.getPosition(), gunvolt[i].isDead, gunvolt[i].shape);
+            if (shouldBreak)
+                break;
+        }
+        if (shouldBreak)
+            continue;
+
+        // Boss
+        if (screen == Screens::GamePlay2 && updateEnemiesColor(j, boss.health, boss.shape.getPosition(), boss.isDead, boss.shape))
+            continue;
+    }
 }
 
-void DrawEnemies(RenderWindow &window)
+void DrawEnemies(RenderWindow &window, Screens screen)
 {
-    if (!ball_de_voux.isDead)
-        window.draw(ball_de_voux.shape);
-    if (!jamminger.isDead)
-        window.draw(jamminger.shape);
-    if (!gunvolt.isDead)
-        window.draw(gunvolt.shape);
+    for (int i = 0; i < ball_de_vouxCount; i++)
+        if (!ball_de_voux[i].isDead)
+            window.draw(ball_de_voux[i].shape);
+    for (int i = 0; i < jammingerCount; i++)
+        if (!jamminger[i].isDead)
+            window.draw(jamminger[i].shape);
+    for (int i = 0; i < gunvoltCount; i++)
+        if (!gunvolt[i].isDead)
+            window.draw(gunvolt[i].shape);
     if (player.isImmune && !player.isDead)
     {
         sf::CircleShape immunityCircle;
@@ -335,9 +466,9 @@ void DrawEnemies(RenderWindow &window)
         immunityCircle.setOutlineThickness(3);
         immunityCircle.setOrigin(immunityCircle.getRadius(), immunityCircle.getRadius());
         immunityCircle.setPosition(player.getPosition());
-        
+
         window.draw(immunityCircle);
     }
-    // if (!boss.remove)
-    //     window.draw(boss.shape);
+    if (screen == Screens::GamePlay2 && !boss.remove)
+        window.draw(boss.shape);
 }

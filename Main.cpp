@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include "enemies.hpp"
-#include "screen.hpp"
 
 using namespace std;
 using namespace sf;
@@ -33,7 +32,9 @@ int main() {
     Start();
     Clock clock;
     Clock EnemyClock;
-    
+    Image Icon;
+    Icon.loadFromFile("playerAnimations/icon.png");
+    window.setIcon(Icon.getSize().x, Icon.getSize().y, Icon.getPixelsPtr());
     while (window.isOpen()) {
         deltaTime = clock.restart().asSeconds();
         deltaTimeEnemy = EnemyClock.restart().asSeconds();
@@ -51,7 +52,7 @@ int main() {
                 }
             }
             if (screen == Screens::MainMenu)
-            UpdateMainScreen(window, event, screen); 
+            UpdateMainScreen(window, event,screen); 
         }
         Update();
         Draw();
@@ -84,7 +85,6 @@ void Start() {
     music.play();
 
     player.start(); 
-    StartEnemies();
     StartMainScreen(window);
 }
 
@@ -93,7 +93,7 @@ void UpdateGamePlay() {
     window.setView(camera1);
     camera1.setCenter({ player.getPosition().x, (float)window.getSize().y / 2 });
     player.update(deltaTime, camera1,screen);
-    UpdateEnemies(deltaTimeEnemy);
+    UpdateEnemies(deltaTimeEnemy, screen);
     if (player.isDead)
         screen = Screens::GameOver;
 }
@@ -114,7 +114,7 @@ void DrawGamePlay() {
         window.draw(level2);
     }
     player.draw(window); 
-    DrawEnemies(window);
+    DrawEnemies(window, screen);
 }
 
 void DrawGameOver() {
@@ -151,8 +151,25 @@ void DrawPauseMenu() {
     window.draw(pauseText);  
 }
 
+
+void DrawVictory() {
+    DrawGamePlay();
+    
+    RectangleShape overlay(Vector2f(window.getSize()));
+    overlay.setFillColor(Color(0, 128, 0, 128));
+    window.draw(overlay);
+    
+    Text victoryText("Victory!", stopfont, 72);
+    victoryText.setFillColor(Color::White);
+    victoryText.setPosition(camera1.getCenter().x - victoryText.getGlobalBounds().width / 2,
+                              camera1.getCenter().y - victoryText.getGlobalBounds().height / 2);
+    window.draw(victoryText);
+}
 void Draw() {
     window.clear();
+    cout << "Screen: " << (screen) << endl;
+    cout << "Player Position: " << player.getPosition().x << ", " << player.getPosition().y << endl;
+    cout << "Player Health: " << player.health << endl;
     switch(screen) {
         case Screens::GamePlay1:
         case Screens::GamePlay2:
@@ -166,6 +183,9 @@ void Draw() {
             break;
         case Screens::GameOver:
             DrawGameOver();
+            break;
+        case Screens::Victory:
+            DrawVictory();
             break;
     }
 
