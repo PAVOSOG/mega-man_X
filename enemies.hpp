@@ -9,7 +9,7 @@ using namespace std;
 using namespace sf;
 
 
-void UpdateEnemies(float deltaTime, Screens screen);
+void UpdateEnemies(float deltaTime, Screens& screen);
 void DrawEnemies(RenderWindow &window, Screens screen);
 void StartEnemies(Screens screen, float deltaTime);
 

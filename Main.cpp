@@ -198,11 +198,9 @@ void DrawVictory() {
                               camera1.getCenter().y - victoryText.getGlobalBounds().height / 2);
     window.draw(victoryText);
 }
+
 void Draw() {
     window.clear();
-    cout << "Screen: " << (screen) << endl;
-    cout << "Player Position: " << player.getPosition().x << ", " << player.getPosition().y << endl;
-    cout << "Player Health: " << player.health << endl;
     switch(screen) {
         case Screens::GamePlay1:
         case Screens::GamePlay2:

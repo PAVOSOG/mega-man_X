@@ -335,7 +335,7 @@ Vector2f bossPos = {500, -1300};
 
 int ball_de_vouxCount;
 int jammingerCount;
-int gunvoltCount;
+int boomBenCount;
 
 void StartEnemies(Screens screen, float deltaTime)
 {
@@ -343,7 +343,7 @@ void StartEnemies(Screens screen, float deltaTime)
     {
         ball_de_vouxCount = ball_de_vouxCountV1;
         jammingerCount = jammingerCountV1;
-        gunvoltCount = bombBeenCountV1;
+        boomBenCount = bombBeenCountV1;
 
         for (int i = 0; i < ball_de_vouxCount; i++)
         {
@@ -353,7 +353,7 @@ void StartEnemies(Screens screen, float deltaTime)
         {
             jamminger[i].start(jammingerPosV1[i].x, jammingerPosV1[i].y);
         }
-        for (int i = 0; i < gunvoltCount; i++)
+        for (int i = 0; i < boomBenCount; i++)
         {
             boomBeen[i].start(boomBenPosV1[i].x, boomBenPosV1[i].y);
         }
@@ -362,7 +362,7 @@ void StartEnemies(Screens screen, float deltaTime)
     {
         ball_de_vouxCount = ball_de_vouxCountV2;
         jammingerCount = jammingerCountV2;
-        gunvoltCount = boomBeenCountV2;
+        boomBenCount = boomBeenCountV2;
         boss.start(bossPos.x, bossPos.y, deltaTime);
         for (int i = 0; i < ball_de_vouxCount; i++)
         {
@@ -372,7 +372,7 @@ void StartEnemies(Screens screen, float deltaTime)
         {
             jamminger[i].start(jammingerPosV2[i].x, jammingerPosV2[i].y);
         }
-        for (int i = 0; i < gunvoltCount; i++)
+        for (int i = 0; i < boomBenCount; i++)
         {
             boomBeen[i].start(boomBenPosV2[i].x, boomBenPosV2[i].y);
         }
@@ -444,7 +444,7 @@ void checkPlayerHealth(int damage, Sprite shape, bool isdead)
     damageTimer = 0;
 }
 
-void UpdateEnemies(float deltaTime, Screens screen)
+void UpdateEnemies(float deltaTime, Screens& screen)
 {
     bool isWon = true;
     if (oldScreen != screen)
@@ -462,8 +462,6 @@ void UpdateEnemies(float deltaTime, Screens screen)
     for (int i = 0; i < ball_de_vouxCount; i++)
     {
         checkPlayerHealth(ball_de_voux[i].damage, ball_de_voux[i].shape, ball_de_voux[i].isDead);
-        cout << "Ball De Voux " << i << endl;
-        cout << ball_de_voux[i].isDead << i << endl;
         if (!ball_de_voux[i].isDead)
             isWon = false;
         ball_de_voux[i].update(deltaTime);
@@ -472,15 +470,11 @@ void UpdateEnemies(float deltaTime, Screens screen)
     {
         if (!jamminger[i].isDead)
             isWon = false;
-        cout << "Jamminger " << i << endl;
-        cout << jamminger[i].isDead << i << endl;
         checkPlayerHealth(jamminger[i].damage, jamminger[i].shape, jamminger[i].isDead);
         jamminger[i].update();
     }
-    for (int i = 0; i < gunvoltCount; i++)
+    for (int i = 0; i < boomBenCount; i++)
     {
-        cout << "BoomBeen " << i << endl;
-        cout << boomBeen[i].isDead << i << endl;
         if (!boomBeen[i].isDead)
             isWon = false;
         checkPlayerHealth(boomBeen[i].damage, boomBeen[i].shape, boomBeen[i].isDead);
@@ -488,8 +482,6 @@ void UpdateEnemies(float deltaTime, Screens screen)
     }
     if (screen == Screens::GamePlay2)
     { // boss fight
-        cout << "Boss" << endl;
-        cout << boss.isDead << endl;
         if (!boss.isDead)
             isWon = false;
         checkPlayerHealth(boss.damage, boss.missileBoss, boss.isDead);
@@ -519,7 +511,7 @@ void UpdateEnemies(float deltaTime, Screens screen)
             continue;
 
         // BoomBeen
-        for (int i = 0; i < gunvoltCount; i++)
+        for (int i = 0; i < boomBenCount; i++)
         {
             shouldBreak = updateEnemiesColor(j, boomBeen[i].health, boomBeen[i].shape.getPosition(), boomBeen[i].isDead, boomBeen[i].shape);
             if (shouldBreak)
@@ -534,6 +526,7 @@ void UpdateEnemies(float deltaTime, Screens screen)
     }
     if (isWon)
     {
+        cout << "You won" << endl;
         screen = Screens::Victory;
     }
 }
@@ -546,7 +539,7 @@ void DrawEnemies(RenderWindow &window, Screens screen)
     for (int i = 0; i < jammingerCount; i++)
         if (!jamminger[i].isDead)
             window.draw(jamminger[i].shape);
-    for (int i = 0; i < gunvoltCount; i++)
+    for (int i = 0; i < boomBenCount; i++)
         if (!boomBeen[i].isDead)
             window.draw(boomBeen[i].shape);
     if (player.isImmune && !player.isDead)
