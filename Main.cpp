@@ -78,7 +78,7 @@ void Start() {
 
     level2.setScale(3, 3);
     level2.setPosition(0, 0);
-    level2.setTexture(level2Bg);
+    level2.setTexture(levelBg);
 
     music.setLoop(true);
     music.setVolume(3);
@@ -94,8 +94,13 @@ void UpdateGamePlay() {
     camera1.setCenter({ player.getPosition().x, (float)window.getSize().y / 2 });
     player.update(deltaTime, camera1,screen);
     UpdateEnemies(deltaTimeEnemy, screen);
-    if (player.isDead)
+    if (player.isDead){
         screen = Screens::GameOver;
+        music.stop();
+        music_game_over.setVolume(50);
+        music_game_over.setLoop(false);
+        music_game_over.play();
+    }
 }
 
 void Update() {
@@ -107,10 +112,11 @@ void Update() {
 
 void DrawGamePlay() {
     window.clear();
-    window.draw(background);
     if (screen == Screens::GamePlay1) {
+        window.draw(background);
         window.draw(level);
     } else if (screen == Screens::GamePlay2) {
+        // window.draw(background); 
         window.draw(level2);
     }
     player.draw(window); 
@@ -129,8 +135,6 @@ void DrawGameOver() {
     pauseMenu.setPosition(camera1.getCenter().x - pauseText.getGlobalBounds().width / 2,
                           camera1.getCenter().y - pauseText.getGlobalBounds().height / 2);
     window.draw(pauseText);
-    music.stop();
-    music_game_over.play();
     gameOverTimer+=deltaTime;
     if (gameOverTimer>=2)
     {

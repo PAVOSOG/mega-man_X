@@ -128,48 +128,60 @@ struct Jamminger
     }
 };
 
-
-struct GunVolt
+struct BoomBeen
 {
     Sprite shape;
-    Texture gettingReady;
     Texture attack;
-    int damage;
-    int col;
-    bool isDead;
-    int health;
+    Vector2f velocity;
+    int yCord;
+    int speed = 1;
+    int col = 0;
+    bool isDead = false;
+    int health = 2;
+    int damage = 2;
     void start(int x, int y)
     {
-        damage = 3;
-        col = 0;
-        isDead = false;
-        health = 4;
-        gettingReady.loadFromFile("enemies/gun volt1.png");
-        attack.loadFromFile("enemies/gun volt2.png");
-        shape.setScale(5, 5);
+        attack.loadFromFile("enemies/gun volt1.png");
+        shape.setScale(4, 4);
+        yCord = rand() % 400;
         shape.setPosition(Vector2f(x, y));
-        shape.setTexture(gettingReady);
-        shape.setTextureRect(IntRect(col * 50, 0, 50, 65));
-        col = (col + 1) % 7;
-        shape.setTexture(attack);
-        shape.setTextureRect(IntRect(col * 50, 0, 50, 70));
-        col = (col + 1) % 5;
+    }
+    void movement()
+    {
+        velocity = (player.getPosition()) - (shape.getPosition());
+        float mag = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
+        velocity = {velocity.x / mag, velocity.y / mag};
+        velocity = {velocity.x * speed, velocity.y * speed};
+        shape.move(velocity);
     }
     void update()
     {
-        if (isDead)
+        shape.setTexture(attack);
+        Scaling();
+        movement();
+        shape.setTextureRect(IntRect(col * 48, 0, 48, 50));
+        col = (col + 1) % 9;
+    }
+    void Scaling()
+    {
+        if (shape.getPosition().x < player.getPosition().x)
         {
-            return;
+            shape.setScale(-4, 4);
+            shape.move(1, 0);
         }
-        /*shape.setTexture(gettingReady);
-        shape.setTextureRect(IntRect(col * 50, 0, 50, 65));
-        col = (col + 1) % 7;*/
+        else
+        {
+            shape.setScale(4, 4);
+            shape.move(-1, 0);
+        }
     }
 };
 
 struct BOSS
 {
     Sprite shape;
+    Sprite missileBoss;
+    Texture moka3ab;
     Texture flyTexture;
     Texture attackTexture;
     Texture deadTexture;
@@ -181,9 +193,15 @@ struct BOSS
     int health;
     bool remove;
     int damage;
+    Vector2f bossmisspos;
+    float flyFrame = 0.05f;
+    float fly_timer = 0;
 
-    void start(int x, int y)
+    void start(int x, int y, float deltaTime)
     {
+        moka3ab.create(100, 100);
+        missileBoss.setTexture(moka3ab);
+        missileBoss.setColor(sf::Color::Green);
         col = 0;
         row = 0;
         isFlying = true;
@@ -196,39 +214,53 @@ struct BOSS
         shape.setScale(3.5, 3.5);
         shape.setPosition(x, y);
         flyMovement();
-        fly();
+        fly(deltaTime);
+        missileBoss.setPosition(shape.getPosition().x + 100, shape.getPosition().y);
     }
-    void update()
+    void update(float deltaTime)
     {
+        missileBoss.setTexture(moka3ab);
+        missileBoss.setColor(sf::Color::Green);
         if (isFlying)
         {
             flyMovement();
-            fly();
+            fly(deltaTime);
         }
         else if (isAttacking)
-            attack();
+            attack(deltaTime);
         if (isDead)
             dead();
+        missileBoss.setPosition(shape.getPosition().x + 50, shape.getPosition().y + 350);
     }
-    void fly()
+    void fly(float delTatime)
     {
-        shape.setTexture(flyTexture);
-        shape.setTextureRect(IntRect(col * 148, 0, 148, 120));
-        col = (col + 1) % 3;
-        if (shape.getPosition().y <= 200)
+        fly_timer += delTatime;
+        if (fly_timer >= flyFrame)
+        {
+            shape.setTexture(flyTexture);
+            shape.setTextureRect(IntRect(col * 148, 0, 148, 120));
+            col = (col + 1) % 3;
+            fly_timer = 0;
+        }
+        if (shape.getPosition().y >= 0)
         {
             isFlying = false;
             isAttacking = true;
         }
     }
-    void attack()
-    {
-        col = 0;
-        attackTexture.loadFromFile("enemies/boss attacking.png");
-        shape.setTexture(attackTexture);
-        shape.setTextureRect(IntRect(col * 148, row * 128, 148, 128));
-        col = (col + 1) % 3;
-        row = (row + 1) % 2;
+    void attack(float deltaTime)
+     {
+    //     col = 0;
+        fly_timer += deltaTime;
+        if (fly_timer >= flyFrame)
+        {
+            attackTexture.loadFromFile("enemies/boss attacking.png");
+            shape.setTexture(attackTexture);
+            shape.setTextureRect(IntRect(col * 148, row * 128, 148, 128));
+            col = (col + 1) % 3;
+            row = (row + 1) % 2;
+            fly_timer=0;
+        }
     }
     void dead()
     {
@@ -236,15 +268,17 @@ struct BOSS
         shape.setTexture(deadTexture);
         shape.setTextureRect(IntRect(0, 3 * 112, 148, 112));
         shape.move(0, 0.5);
-        if (shape.getPosition().y >= 800)
+        if (shape.getPosition().y >= 50)
         {
             remove = true;
         }
     }
     void flyMovement()
     {
-        if (shape.getPosition().y < 315)
+        if (shape.getPosition().y < 200)
+        {
             shape.move(0, 3);
+        }
     }
 };
 
@@ -262,14 +296,14 @@ const int ball_de_vouxCountV2 = 5;
 Vector2f ball_de_vouxPos[ball_de_vouxCountV1] = {{2400, 200}, {2100, 200}};
 Vector2f ball_de_vouxPosV2[ball_de_vouxCountV2] = {{}, {}, {}, {}, {}};
 
-GunVolt gunvolt[3];
-const int gunvoltCountV1 = 1;
-const int gunvoltCountV2 = 2;
-Vector2f gunvoltPosV1[gunvoltCountV1] = {{8470, 10}};
-Vector2f gunvoltPosV2[gunvoltCountV2] = {{}, {}};
+BoomBeen boomBeen[3];
+const int bombBeenCountV1 = 3;
+const int boomBeenCountV2 = 2;
+Vector2f boomBenPosV1[bombBeenCountV1] = {{8400, 100},{1500, 100},{5000,100}};
+Vector2f boomBenPosV2[boomBeenCountV2] = {{}, {}};
 
 BOSS boss;
-Vector2f bossPos = {500, 200};
+Vector2f bossPos = {1000, -500};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -277,35 +311,45 @@ int ball_de_vouxCount;
 int jammingerCount;
 int gunvoltCount;
 
-void StartEnemies(Screens screen)
+void StartEnemies(Screens screen, float deltaTime)
 {
     if (screen == Screens::GamePlay1)
     {
         ball_de_vouxCount = ball_de_vouxCountV1;
         jammingerCount = jammingerCountV1;
-        gunvoltCount = gunvoltCountV1;
+        gunvoltCount = bombBeenCountV1;
+
+        for (int i = 0; i < ball_de_vouxCount; i++)
+        {
+            ball_de_voux[i].start(ball_de_vouxPos[i].x, ball_de_vouxPos[i].y);
+        }
+        for (int i = 0; i < jammingerCount; i++)
+        {
+            jamminger[i].start(jammingerPosV1[i].x, jammingerPosV1[i].y);
+        }
+        for (int i = 0; i < gunvoltCount; i++)
+        {
+            boomBeen[i].start(boomBenPosV1[i].x, boomBenPosV1[i].y);
+        }
     }
     else if (screen == Screens::GamePlay2)
     {
         ball_de_vouxCount = ball_de_vouxCountV2;
         jammingerCount = jammingerCountV2;
-        gunvoltCount = gunvoltCountV2;
-    }
-    for (int i = 0; i < ball_de_vouxCount; i++)
-    {
-        ball_de_voux[i].start(ball_de_vouxPos[i].x, ball_de_vouxPos[i].y);
-    }
-    for (int i = 0; i < jammingerCount; i++)
-    {
-        jamminger[i].start(jammingerPosV1[i].x, jammingerPosV1[i].y);
-    }
-    for (int i = 0; i < gunvoltCount; i++)
-    {
-        gunvolt[i].start(gunvoltPosV1[i].x, gunvoltPosV1[i].y);
-    }
-    if (screen == Screens::GamePlay2)
-    {
-        boss.start(500, 200);
+        gunvoltCount = boomBeenCountV2;
+        boss.start(bossPos.x, bossPos.y, deltaTime);
+        for (int i = 0; i < ball_de_vouxCount; i++)
+        {
+            ball_de_voux[i].start(ball_de_vouxPosV2[i].x, ball_de_vouxPosV2[i].y);
+        }
+        for (int i = 0; i < jammingerCount; i++)
+        {
+            jamminger[i].start(jammingerPosV2[i].x, jammingerPosV2[i].y);
+        }
+        for (int i = 0; i < gunvoltCount; i++)
+        {
+            boomBeen[i].start(boomBenPosV2[i].x, boomBenPosV2[i].y);
+        }
     }
 }
 bool updateEnemiesColor(int bulletIdx, int &health, Vector2f position, bool &isDead, Sprite &shape)
@@ -378,7 +422,7 @@ void UpdateEnemies(float deltaTime, Screens screen)
     if (oldScreen != screen)
     {
         oldScreen = screen;
-        StartEnemies(screen);
+        StartEnemies(screen, deltaTime);
     }
 
     damageTimer += deltaTime;
@@ -399,13 +443,13 @@ void UpdateEnemies(float deltaTime, Screens screen)
     }
     for (int i = 0; i < gunvoltCount; i++)
     {
-        checkPlayerHealth(gunvolt[i].damage, gunvolt[i].shape, gunvolt[i].isDead);
-        gunvolt[i].update();
+        checkPlayerHealth(boomBeen[i].damage, boomBeen[i].shape, boomBeen[i].isDead);
+        boomBeen[i].update();
     }
     if (screen == Screens::GamePlay2)
-    {
-        checkPlayerHealth(boss.damage, boss.shape, boss.isDead);
-        boss.update();
+    { // boss fight
+        checkPlayerHealth(boss.damage, boss.missileBoss, boss.isDead);
+        boss.update(deltaTime);
     }
     for (int j = 0; j < player.bullets.size(); j++)
     {
@@ -430,10 +474,10 @@ void UpdateEnemies(float deltaTime, Screens screen)
         if (shouldBreak)
             continue;
 
-        // GunVolt
+        // BoomBeen
         for (int i = 0; i < gunvoltCount; i++)
         {
-            shouldBreak = updateEnemiesColor(j, gunvolt[i].health, gunvolt[i].shape.getPosition(), gunvolt[i].isDead, gunvolt[i].shape);
+            shouldBreak = updateEnemiesColor(j, boomBeen[i].health, boomBeen[i].shape.getPosition(), boomBeen[i].isDead, boomBeen[i].shape);
             if (shouldBreak)
                 break;
         }
@@ -455,8 +499,8 @@ void DrawEnemies(RenderWindow &window, Screens screen)
         if (!jamminger[i].isDead)
             window.draw(jamminger[i].shape);
     for (int i = 0; i < gunvoltCount; i++)
-        if (!gunvolt[i].isDead)
-            window.draw(gunvolt[i].shape);
+        if (!boomBeen[i].isDead)
+            window.draw(boomBeen[i].shape);
     if (player.isImmune && !player.isDead)
     {
         sf::CircleShape immunityCircle;
@@ -470,5 +514,11 @@ void DrawEnemies(RenderWindow &window, Screens screen)
         window.draw(immunityCircle);
     }
     if (screen == Screens::GamePlay2 && !boss.remove)
+    {
+        // if(boss.shape.getposition().y<)
         window.draw(boss.shape);
+
+        
+        window.draw(boss.missileBoss);
+    }
 }

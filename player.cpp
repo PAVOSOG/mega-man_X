@@ -95,6 +95,7 @@ void Player::playerMouvement(float& deltaTime, Screens &screen, View &view) {
     if (playerSprite.getPosition().x >= 7130 && playerSprite.getPosition().x <= 7030 && playerSprite.getPosition().y > 320 || playerSprite.getPosition().x >= 3945 && playerSprite.getPosition().x <= 4045 && playerSprite.getPosition().y > 320 || playerSprite.getPosition().y > 380 && playerSprite.getPosition().x >= 2430 && playerSprite.getPosition().x <= 2525) {
        screen = Screens::GameOver;
     }
+   
 
     if (playerSprite.getPosition().y >= floor) {
         playerSprite.setPosition(playerSprite.getPosition().x, floor);

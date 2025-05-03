@@ -11,7 +11,7 @@ using namespace sf;
 
 void UpdateEnemies(float deltaTime, Screens screen);
 void DrawEnemies(RenderWindow &window, Screens screen);
-void StartEnemies(Screens screen);
+void StartEnemies(Screens screen, float deltaTime);
 
 // Structures
 struct BDV {
@@ -34,7 +34,7 @@ struct Jamminger {
     void update();
 };
 
-struct GunVolt {
+struct BoomBeen {
     Sprite shape;
     Texture gettingReady;
     Texture attack;
@@ -42,8 +42,21 @@ struct GunVolt {
     void start();
     void update();
 };
+struct BOSS
+{
+    Sprite shape;
+    Texture flyTexture;
+    Texture attackTexture;
+    Texture deadTexture;
+    void start();
+    void update();
+    void fly(float deltaTime);
+    void attack();
+    void dead();
+    void flyMovement();
+};
 
 extern BDV ball_de_voux;
 extern Jamminger jamminger[3];
-extern GunVolt gunvolt;
+extern BoomBeen boomBeen;
 
