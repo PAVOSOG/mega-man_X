@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 using namespace sf;
 
@@ -14,4 +15,4 @@ enum Screens
 
 void StartMainScreen(RenderWindow &window);
 void DrawMainScreen(RenderWindow &window);
-void UpdateMainScreen(RenderWindow &window, Event &event, Screens &screen);
+void UpdateMainScreen(RenderWindow &window, Event &event, Screens &screen, Music& l1, Music& l2);

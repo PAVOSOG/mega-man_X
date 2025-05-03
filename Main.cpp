@@ -21,10 +21,12 @@ void Draw();
 void Start();
 void UpdateGamePlay();
 Screens screen = Screens::MainMenu;
+Screens oldLevelScreen = Screens::GamePlay1;
 
 Font stopfont;
 float deltaTime;
 float deltaTimeEnemy;
+Music musicLevel2;
 Music music;
 Music music_game_over;
 
@@ -45,14 +47,22 @@ int main() {
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::C)
                 player.canShoot = true; // Use player object
             if (event.type == Event::KeyReleased && event.key.code == Keyboard::Escape) {
-                if (screen == Screens::GamePlay1) {
+                if (screen == Screens::GamePlay1 || screen == Screens::GamePlay2) {
+                    oldLevelScreen = screen;
                     screen = Screens::Pause;
+                    music.pause();
+                    musicLevel2.pause();
                 } else if (screen == Screens::Pause) {
-                    screen = Screens::GamePlay1;
+                    screen = oldLevelScreen;
+                    if (oldLevelScreen == Screens::GamePlay1) {
+                        music.play();
+                    } else if (oldLevelScreen == Screens::GamePlay2) {
+                        musicLevel2.play();
+                    }
                 }
             }
             if (screen == Screens::MainMenu)
-            UpdateMainScreen(window, event,screen); 
+            UpdateMainScreen(window, event,screen, music, musicLevel2); 
         }
         Update();
         Draw();
@@ -67,6 +77,7 @@ void Start() {
     level2Bg.loadFromFile("playerAnimations/foreground2.png");
     music.openFromFile("playerAnimations/bg music.mp3");
     music_game_over.openFromFile("playerAnimations/gameover.mp3");
+    musicLevel2.openFromFile("playerAnimations/level2.mp3");
     stopfont.loadFromFile("playerAnimations/main-menu-font.otf");
 
     background.setScale(5, 5);
@@ -81,8 +92,10 @@ void Start() {
     level2.setTexture(levelBg);
 
     music.setLoop(true);
-    music.setVolume(3);
-    music.play();
+    music.setVolume(50);
+
+    musicLevel2.setLoop(true);
+    musicLevel2.setVolume(50);
 
     player.start(); 
     StartMainScreen(window);
@@ -97,6 +110,7 @@ void UpdateGamePlay() {
     if (player.isDead){
         screen = Screens::GameOver;
         music.stop();
+        musicLevel2.stop();
         music_game_over.setVolume(50);
         music_game_over.setLoop(false);
         music_game_over.play();
@@ -106,7 +120,6 @@ void UpdateGamePlay() {
 void Update() {
     if (screen == Screens::GamePlay1||screen==Screens::GamePlay2) {
         UpdateGamePlay();
-       
     } 
 }
 

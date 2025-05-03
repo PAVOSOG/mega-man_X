@@ -179,6 +179,7 @@ struct BoomBeen
 
 struct BOSS
 {
+    int speed = 1;
     Sprite shape;
     Sprite missileBoss;
     Texture moka3ab;
@@ -193,9 +194,10 @@ struct BOSS
     int health;
     bool remove;
     int damage;
-    Vector2f bossmisspos;
+    Vector2f bossmisspos, velocity;
     float flyFrame = 0.05f;
     float fly_timer = 0;
+    bool switched = false;
 
     void start(int x, int y, float deltaTime)
     {
@@ -217,6 +219,17 @@ struct BOSS
         fly(deltaTime);
         missileBoss.setPosition(shape.getPosition().x + 100, shape.getPosition().y);
     }
+    void movement()
+    {
+        velocity = {player.getPosition().x - shape.getPosition().x, 0};
+        float mag = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
+        if (mag != 0)
+        {
+            velocity.x = (velocity.x / mag) * speed;
+            velocity.y = (velocity.y / mag) * speed;
+        }
+        shape.move(velocity);
+    }
     void update(float deltaTime)
     {
         missileBoss.setTexture(moka3ab);
@@ -227,10 +240,23 @@ struct BOSS
             fly(deltaTime);
         }
         else if (isAttacking)
+        {
             attack(deltaTime);
+            movement();
+        }
         if (isDead)
             dead();
         missileBoss.setPosition(shape.getPosition().x + 50, shape.getPosition().y + 350);
+        if (player.getPosition().x+200 > shape.getPosition().x && !switched)
+        {
+            shape.setScale(-3.5,3.5);
+            switched = true;
+        }
+        else if (player.getPosition().x+200 < shape.getPosition().x && switched)
+        {
+            switched = false;
+            shape.setScale(3.5, 3.5);
+        }
     }
     void fly(float delTatime)
     {
@@ -249,8 +275,8 @@ struct BOSS
         }
     }
     void attack(float deltaTime)
-     {
-    //     col = 0;
+    {
+        //     col = 0;
         fly_timer += deltaTime;
         if (fly_timer >= flyFrame)
         {
@@ -259,7 +285,7 @@ struct BOSS
             shape.setTextureRect(IntRect(col * 148, row * 128, 148, 128));
             col = (col + 1) % 3;
             row = (row + 1) % 2;
-            fly_timer=0;
+            fly_timer = 0;
         }
     }
     void dead()
@@ -268,16 +294,16 @@ struct BOSS
         shape.setTexture(deadTexture);
         shape.setTextureRect(IntRect(0, 3 * 112, 148, 112));
         shape.move(0, 0.5);
-        if (shape.getPosition().y >= 50)
+        if (shape.getPosition().y >= -50)
         {
             remove = true;
         }
     }
     void flyMovement()
     {
-        if (shape.getPosition().y < 200)
+        if (shape.getPosition().y < -0)
         {
-            shape.move(0, 3);
+            shape.move(0, 7);
         }
     }
 };
@@ -294,16 +320,16 @@ BDV ball_de_voux[5];
 const int ball_de_vouxCountV1 = 2;
 const int ball_de_vouxCountV2 = 5;
 Vector2f ball_de_vouxPos[ball_de_vouxCountV1] = {{2400, 200}, {2100, 200}};
-Vector2f ball_de_vouxPosV2[ball_de_vouxCountV2] = {{}, {}, {}, {}, {}};
+Vector2f ball_de_vouxPosV2[ball_de_vouxCountV2] = {{2200, 200}, {1400, 200}, {6400, 200}, {7400, 200}, {7900, 200}};
 
-BoomBeen boomBeen[3];
+BoomBeen boomBeen[4];
 const int bombBeenCountV1 = 3;
-const int boomBeenCountV2 = 2;
-Vector2f boomBenPosV1[bombBeenCountV1] = {{8400, 100},{1500, 100},{5000,100}};
-Vector2f boomBenPosV2[boomBeenCountV2] = {{}, {}};
+const int boomBeenCountV2 = 4;
+Vector2f boomBenPosV1[bombBeenCountV1] = {{8400, 100}, {1500, 100}, {5000, 100}};
+Vector2f boomBenPosV2[boomBeenCountV2] = {{2400, 100}, {1400, 100}, {2400, 100}, {6000, 100}};
 
 BOSS boss;
-Vector2f bossPos = {1000, -500};
+Vector2f bossPos = {500, -1300};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -518,7 +544,6 @@ void DrawEnemies(RenderWindow &window, Screens screen)
         // if(boss.shape.getposition().y<)
         window.draw(boss.shape);
 
-        
         window.draw(boss.missileBoss);
     }
 }
