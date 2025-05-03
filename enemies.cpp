@@ -445,6 +445,7 @@ void checkPlayerHealth(int damage, Sprite shape, bool isdead)
 
 void UpdateEnemies(float deltaTime, Screens screen)
 {
+    bool isWon = true;
     if (oldScreen != screen)
     {
         oldScreen = screen;
@@ -460,20 +461,36 @@ void UpdateEnemies(float deltaTime, Screens screen)
     for (int i = 0; i < ball_de_vouxCount; i++)
     {
         checkPlayerHealth(ball_de_voux[i].damage, ball_de_voux[i].shape, ball_de_voux[i].isDead);
+        cout << "Ball De Voux " << i << endl;
+        cout << ball_de_voux[i].isDead << i << endl;
+        if (!ball_de_voux[i].isDead)
+            isWon = false;
         ball_de_voux[i].update(deltaTime);
     }
     for (int i = 0; i < jammingerCount; i++)
     {
+        if (!jamminger[i].isDead)
+            isWon = false;
+        cout << "Jamminger " << i << endl;
+        cout << jamminger[i].isDead << i << endl;
         checkPlayerHealth(jamminger[i].damage, jamminger[i].shape, jamminger[i].isDead);
         jamminger[i].update();
     }
     for (int i = 0; i < gunvoltCount; i++)
     {
+        cout << "BoomBeen " << i << endl;
+        cout << boomBeen[i].isDead << i << endl;
+        if (!boomBeen[i].isDead)
+            isWon = false;
         checkPlayerHealth(boomBeen[i].damage, boomBeen[i].shape, boomBeen[i].isDead);
         boomBeen[i].update();
     }
     if (screen == Screens::GamePlay2)
     { // boss fight
+        cout << "Boss" << endl;
+        cout << boss.isDead << endl;
+        if (!boss.isDead)
+            isWon = false;
         checkPlayerHealth(boss.damage, boss.missileBoss, boss.isDead);
         boss.update(deltaTime);
     }
@@ -513,6 +530,10 @@ void UpdateEnemies(float deltaTime, Screens screen)
         // Boss
         if (screen == Screens::GamePlay2 && updateEnemiesColor(j, boss.health, boss.shape.getPosition(), boss.isDead, boss.shape))
             continue;
+    }
+    if (isWon)
+    {
+        screen = Screens::Victory;
     }
 }
 
