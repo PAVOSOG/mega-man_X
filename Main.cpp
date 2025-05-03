@@ -11,9 +11,11 @@ RenderWindow window(sf::VideoMode(1680, 1050), "Mega Man");
 Texture Bg;
 Texture levelBg;
 Texture level2Bg;
+Sprite HealthBarSprite;
 Sprite level;
 Sprite level2;
 Sprite background;
+Texture healthBar;
 View camera1(Vector2f(0, 0), Vector2f(window.getSize().x, window.getSize().y));
 float gameOverTimer=0.0;
 void Update();
@@ -79,6 +81,7 @@ void Start() {
     music_game_over.openFromFile("playerAnimations/gameover.mp3");
     musicLevel2.openFromFile("playerAnimations/level2.mp3");
     stopfont.loadFromFile("playerAnimations/main-menu-font.otf");
+    healthBar.loadFromFile("playerAnimations/healthBar.png");
 
     background.setScale(5, 5);
     background.setPosition(0, 0);
@@ -97,15 +100,21 @@ void Start() {
     musicLevel2.setLoop(true);
     musicLevel2.setVolume(50);
 
+    HealthBarSprite.setScale(0.75, 0.75);
+    HealthBarSprite.setPosition(0, 0);
+    HealthBarSprite.setTexture(healthBar);
+
     player.start(); 
     StartMainScreen(window);
+
 }
 
 void UpdateGamePlay() {
     std::cout << player.getPosition().x << " " << player.getPosition().y << endl;
     window.setView(camera1);
-    camera1.setCenter({ player.getPosition().x, (float)window.getSize().y / 2 });
-    player.update(deltaTime, camera1,screen);
+    player.update(deltaTime, camera1, screen);
+    camera1.setCenter({ player.getPosition().x> (float)window.getSize().x / 2? player.getPosition().x:window.getSize().x/2, (float)window.getSize().y / 2});
+    HealthBarSprite.setPosition(camera1.getCenter()-Vector2f(750,500));
     UpdateEnemies(deltaTimeEnemy, screen);
     if (player.isDead){
         screen = Screens::GameOver;
@@ -128,10 +137,17 @@ void DrawGamePlay() {
     if (screen == Screens::GamePlay1) {
         window.draw(background);
         window.draw(level);
-    } else if (screen == Screens::GamePlay2) {
+    }
+    else if (screen == Screens::GamePlay2) {
         // window.draw(background); 
         window.draw(level2);
     }
+    window.draw(HealthBarSprite);
+    RectangleShape MissingHealth;
+    MissingHealth.setFillColor(Color::Black);
+    MissingHealth.setPosition(camera1.getCenter() - Vector2f(691, 468));
+    MissingHealth.setSize({35,(float(6-player.health)/6*150)});
+    window.draw(MissingHealth);
     player.draw(window); 
     DrawEnemies(window, screen);
 }

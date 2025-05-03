@@ -9,6 +9,8 @@ const float SPAWN_DURATION = 1.5f;
 const float SPAWN_FRAME_TIME = 0.03f;
 const float SHOOTING_DURATION = 0.3f;
 const float BULLET_SPEED = 1800.0f;
+const float DEATH_FRAME_TIME = 0.1f;
+const float HIT_FRAME_TIME = 0.4f;
 Player player;
 
 void Player::start() {
@@ -17,14 +19,17 @@ void Player::start() {
     isjumping = false;
     isSpawning = true;
     canShoot = true;
+    isHit = false;
     health = 6;
     isDead = false;
     playerDirection = Direction::Right;
     animationIndex = 0;
+    hitAnimationTimer = 0.0f;
     idleAnimationTimer = 0.0f;
     walkAnimationTimer = 0.0f;
     jumpAnimationTimer = 0.0f;
     shootAnimationTimer = 0.0f;
+    deathAnimationTimer = 0.0f;
     spawnTimer = 0.0f;
     shootingTimer = 0.0f;
     isImmune = false;
@@ -44,6 +49,7 @@ void Player::loadTextures() {
     shootJumpTexture.loadFromFile("playerAnimations/mega_jump_shot.png");
     bulletTexture.loadFromFile("playerAnimations/blast.png");
     spawnTexture.loadFromFile("playerAnimations/mega_spawn.png");
+    deathTexture.loadFromFile("playerAnimations/mega_death.png");
 }
 
 void Player::init() {
@@ -67,13 +73,13 @@ void Player::update(float& deltaTime, View &view, Screens &screen) {
 
 void Player::playerMouvement(float& deltaTime, Screens &screen, View &view) {
     ismoving = false;
-    if (Keyboard::isKeyPressed(Keyboard::Right)&& playerSprite.getPosition().x<=8490) {
+    if (!isHit && Keyboard::isKeyPressed(Keyboard::Right)&& playerSprite.getPosition().x<=8490) {
         playerSprite.move(5, 0);
         ismoving = true;
         playerSprite.setScale(playersize, playersize);
         playerDirection = Right;
     }
-    if (Keyboard::isKeyPressed(Keyboard::Left)&& playerSprite.getPosition().x>=255) {
+    if (!isHit && Keyboard::isKeyPressed(Keyboard::Left)&& playerSprite.getPosition().x>=255) {
         playerSprite.move(-5, 0);
         ismoving = true;
         playerSprite.setScale(-playersize, playersize);
@@ -101,7 +107,7 @@ void Player::playerMouvement(float& deltaTime, Screens &screen, View &view) {
         playerSprite.setPosition(playerSprite.getPosition().x, floor);
         speedY = 0;
         isjumping = false;
-        if (Keyboard::isKeyPressed(Keyboard::X)) {
+        if (!isHit && Keyboard::isKeyPressed(Keyboard::X)) {
             speedY = -20;
             isjumping = true;
         }
@@ -120,104 +126,122 @@ void Player::draw(RenderWindow &window) {
 void Player::playerAnimation(float& deltaTime) {
     static bool wasMoving = false;
     static bool wasJumping = false;
-
-    if (ismoving != wasMoving || isjumping != wasJumping) {
-        animationIndex = 0;
-        wasMoving = ismoving;
-        wasJumping = isjumping;
-    }
-    if (isShooting) {
-        if (isjumping) {
-            if (speedY < 0) {
-                if (animationIndex > 2) {
-                    animationIndex = 2;
-                }
-            }
-            else {
-                if (animationIndex != 3) {
-                    animationIndex = 3;
-                }
-
-            }
-
-            playerSprite.setTexture(shootJumpTexture);
-            playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
-            animationIndex = ((animationIndex + 1) / 3) % 7;
-        }
-        else if (ismoving) {
-            walkAnimationTimer += deltaTime;
-            if (walkAnimationTimer >= WALK_FRAME_TIME) {
-                walkAnimationTimer = 0.0f;
-                playerSprite.setTexture(shootWalkTexture);
-                playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
-                animationIndex = (animationIndex + 1) % 10;
-            }
-            
-        }
-        else  {
-            playerSprite.setTexture(shootIdleTexture);
-            playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
-            animationIndex = (animationIndex + 1) % 2;
-            
-        }
-        shootingTimer += deltaTime;
-        if (shootingTimer >= SHOOTING_DURATION) {
-            isShooting = false;
-            shootingTimer = 0.0f;
+    if (isHit) {
+        playerSprite.setTexture(deathTexture);
+        playerSprite.setTextureRect(IntRect(5 * 51, 0, 51, 51));
+        hitAnimationTimer += deltaTime;
+        if (hitAnimationTimer >= HIT_FRAME_TIME) {
+            isHit = false;
+            hitAnimationTimer = 0.0f;
         }
     }
     else {
-        if (isjumping) {
-            jumpAnimationTimer += deltaTime;
-            if (jumpAnimationTimer >= JUMP_FRAME_TIME) {
-                jumpAnimationTimer = 0.0f;
-            }
-            if (speedY < 0) {
-                if (animationIndex > 2) {
-                    animationIndex = 2;
+        if (ismoving != wasMoving || isjumping != wasJumping) {
+            animationIndex = 0;
+            wasMoving = ismoving;
+            wasJumping = isjumping;
+        }
+        if (isShooting) {
+            if (isjumping) {
+                if (speedY < 0) {
+                    if (animationIndex > 2) {
+                        animationIndex = 2;
+                    }
                 }
+                else {
+                    if (animationIndex != 3) {
+                        animationIndex = 3;
+                    }
+
+                }
+
+                playerSprite.setTexture(shootJumpTexture);
+                playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
+                animationIndex = ((animationIndex + 1) / 3) % 7;
+            }
+            else if (ismoving) {
+                walkAnimationTimer += deltaTime;
+                if (walkAnimationTimer >= WALK_FRAME_TIME) {
+                    walkAnimationTimer = 0.0f;
+                    playerSprite.setTexture(shootWalkTexture);
+                    playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
+                    animationIndex = (animationIndex + 1) % 10;
+                }
+
             }
             else {
-                if (animationIndex != 3) {
-                    animationIndex = 3;
+                playerSprite.setTexture(shootIdleTexture);
+                playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
+                animationIndex = (animationIndex + 1) % 2;
+
+            }
+            shootingTimer += deltaTime;
+            if (shootingTimer >= SHOOTING_DURATION) {
+                isShooting = false;
+                shootingTimer = 0.0f;
+            }
+        }
+        else {
+            if (isjumping) {
+                jumpAnimationTimer += deltaTime;
+                if (jumpAnimationTimer >= JUMP_FRAME_TIME) {
+                    jumpAnimationTimer = 0.0f;
+                }
+                if (speedY < 0) {
+                    if (animationIndex > 2) {
+                        animationIndex = 2;
+                    }
+                }
+                else {
+                    if (animationIndex != 3) {
+                        animationIndex = 3;
+                    }
+
                 }
 
-            }
-
-            playerSprite.setTexture(jumpTexture);
-            playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
-            animationIndex = ((animationIndex + 1) / 3) % 7;
-        }
-        else if (ismoving) {
-            walkAnimationTimer += deltaTime;
-            if (walkAnimationTimer >= WALK_FRAME_TIME) {
-                walkAnimationTimer = 0.0f;
-                playerSprite.setTexture(walkTexture);
+                playerSprite.setTexture(jumpTexture);
                 playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
-                animationIndex = (animationIndex + 1) % 11;
+                animationIndex = ((animationIndex + 1) / 3) % 7;
+            }
+            else if (ismoving) {
+                walkAnimationTimer += deltaTime;
+                if (walkAnimationTimer >= WALK_FRAME_TIME) {
+                    walkAnimationTimer = 0.0f;
+                    playerSprite.setTexture(walkTexture);
+                    playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
+                    animationIndex = (animationIndex + 1) % 11;
+                }
+            }
+
+
+            else {
+                idleAnimationTimer += deltaTime;
+                if (idleAnimationTimer >= IDLE_FRAME_TIME) {
+                    idleAnimationTimer = 0.0f;
+                    playerSprite.setTexture(idleTexture);
+                    playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
+                    animationIndex = (animationIndex + 1) % 4;
+                }
             }
         }
-
-
-        else {
-            idleAnimationTimer += deltaTime;
-            if (idleAnimationTimer >= IDLE_FRAME_TIME) {
-                idleAnimationTimer = 0.0f;
-                playerSprite.setTexture(idleTexture);
+        // Reset timers when animation state changes
+        if (!ismoving && !isjumping) {
+            walkAnimationTimer = 0.0f;
+            jumpAnimationTimer = 0.0f;
+        }
+        if (!isjumping) {
+            jumpAnimationTimer = 0.0f;
+        }
+        if (isDead) {
+            deathAnimationTimer += deltaTime;
+            if (deathAnimationTimer >= DEATH_FRAME_TIME) {
+                deathAnimationTimer = 0.0f;
+                playerSprite.setTexture(deathTexture);
                 playerSprite.setTextureRect(IntRect(animationIndex * 51, 0, 51, 51));
-                animationIndex = (animationIndex + 1) % 4;
+                animationIndex = (animationIndex + 1) % 12;
             }
         }
     }
-    // Reset timers when animation state changes
-    if (!ismoving && !isjumping) {
-        walkAnimationTimer = 0.0f;
-        jumpAnimationTimer = 0.0f;
-    }
-    if (!isjumping) {
-        jumpAnimationTimer = 0.0f;
-    }
-   
 }
 
 void Player::spawnAnimation(float& deltaTime) {
@@ -241,7 +265,7 @@ void Player::spawnAnimation(float& deltaTime) {
 }
 
 void Player::shooting() {
-    if (Keyboard::isKeyPressed(Keyboard::C) && canShoot) {
+    if (!isHit && Keyboard::isKeyPressed(Keyboard::C) && canShoot) {
         shoot(player.getPosition());
         canShoot = false;
         isShooting = true;

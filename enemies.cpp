@@ -435,6 +435,7 @@ void checkPlayerHealth(int damage, Sprite shape, bool isdead)
         return;
     }
     player.health -= damage;
+    player.isHit = true;
     if (player.health <= 0)
     {
         player.isDead = true;
