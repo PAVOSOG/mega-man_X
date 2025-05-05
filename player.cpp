@@ -1,7 +1,7 @@
 #include "player.hpp"
 
 using namespace sf;
-
+//zoomin
 const float IDLE_FRAME_TIME = 0.2f;
 const float WALK_FRAME_TIME = 0.1f;
 const float JUMP_FRAME_TIME = 0.15f;

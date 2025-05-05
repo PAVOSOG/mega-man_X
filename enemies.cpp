@@ -13,6 +13,7 @@
 using namespace std;
 using namespace sf;
 const float bdvframe = 0.1f;
+const float bbframe = 0.1f;
 float damageTimeframe = 2.0f;
 float damageTimer = 0;
 
@@ -88,7 +89,7 @@ struct Jamminger
     {
         damage = 3;
         yCord;
-        speed = 1;
+        speed = 1.75;
         col = 0;
         isDead = false;
         health = 4;
@@ -134,8 +135,9 @@ struct BoomBeen
     Texture attack;
     Vector2f velocity;
     int yCord;
-    int speed = 1;
+    int speed = 1.25;
     int col = 0;
+    float bbmovetimer = 0;
     bool isDead = false;
     int health = 2;
     int damage = 2;
@@ -145,6 +147,8 @@ struct BoomBeen
         shape.setScale(4, 4);
         yCord = rand() % 400;
         shape.setPosition(Vector2f(x, y));
+        shape.setOrigin(48 / 2, 50 / 2);
+
     }
     void movement()
     {
@@ -154,13 +158,18 @@ struct BoomBeen
         velocity = {velocity.x * speed, velocity.y * speed};
         shape.move(velocity);
     }
-    void update()
+    void update(float deltaTime)
     {
         shape.setTexture(attack);
+        bbmovetimer += deltaTime;
+
         Scaling();
         movement();
-        shape.setTextureRect(IntRect(col * 48, 0, 48, 50));
-        col = (col + 1) % 9;
+        if (bbmovetimer >= bbframe) {
+            bbmovetimer = 0;
+            shape.setTextureRect(IntRect(col * 48, 0, 48, 50));
+            col = (col + 1) % 9;
+        }
     }
     void Scaling()
     {
@@ -211,7 +220,7 @@ struct BOSS
         isDead = false;
         health = 4;
         remove = false;
-        damage = 3;
+        damage = 4;
         flyTexture.loadFromFile("enemies/boss flying.png");
         shape.setScale(3.5, 3.5);
         shape.setPosition(x, y);
@@ -225,7 +234,7 @@ struct BOSS
         float mag = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
         if (mag != 0)
         {
-            velocity.x = (velocity.x / mag) * speed;
+            velocity.x = (velocity.x / mag) * speed*1.75;
             velocity.y = (velocity.y / mag) * speed;
         }
         shape.move(velocity);
@@ -247,7 +256,7 @@ struct BOSS
         if (isDead)
             dead();
         missileBoss.setPosition(shape.getPosition().x + 50, shape.getPosition().y + 350);
-        if (player.getPosition().x+200 > shape.getPosition().x && !switched)
+        if (player.getPosition().x+100 > shape.getPosition().x && !switched)
         {
             shape.setScale(-3.5,3.5);
             switched = true;
@@ -268,7 +277,7 @@ struct BOSS
             col = (col + 1) % 3;
             fly_timer = 0;
         }
-        if (shape.getPosition().y >= 0)
+        if (shape.getPosition().y >= -0)
         {
             isFlying = false;
             isAttacking = true;
@@ -294,14 +303,14 @@ struct BOSS
         shape.setTexture(deadTexture);
         shape.setTextureRect(IntRect(0, 3 * 112, 148, 112));
         shape.move(0, 0.5);
-        if (shape.getPosition().y >= -50)
+        if (shape.getPosition().y >= 00)
         {
             remove = true;
         }
     }
     void flyMovement()
     {
-        if (shape.getPosition().y < -0)
+        if (shape.getPosition().y < 0)
         {
             shape.move(0, 7);
         }
@@ -320,7 +329,7 @@ BDV ball_de_voux[5];
 const int ball_de_vouxCountV1 = 2;
 const int ball_de_vouxCountV2 = 5;
 Vector2f ball_de_vouxPos[ball_de_vouxCountV1] = {{2400, 200}, {2100, 200}};
-Vector2f ball_de_vouxPosV2[ball_de_vouxCountV2] = {{2200, 200}, {1400, 200}, {6400, 200}, {7400, 200}, {7900, 200}};
+Vector2f ball_de_vouxPosV2[ball_de_vouxCountV2] = {{2200, 200}, {1400, 200}, {6400, 130}, {7400, 130}, {7900, 130}};
 
 BoomBeen boomBeen[4];
 const int bombBeenCountV1 = 3;
@@ -329,7 +338,7 @@ Vector2f boomBenPosV1[bombBeenCountV1] = {{8400, 100}, {1500, 100}, {5000, 100}}
 Vector2f boomBenPosV2[boomBeenCountV2] = {{2400, 100}, {1400, 100}, {2400, 100}, {6000, 100}};
 
 BOSS boss;
-Vector2f bossPos = {500, -1300};
+Vector2f bossPos = {700, -1200};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -478,7 +487,7 @@ void UpdateEnemies(float deltaTime, Screens& screen)
         if (!boomBeen[i].isDead)
             isWon = false;
         checkPlayerHealth(boomBeen[i].damage, boomBeen[i].shape, boomBeen[i].isDead);
-        boomBeen[i].update();
+        boomBeen[i].update(deltaTime);
     }
     if (screen == Screens::GamePlay2)
     { // boss fight
