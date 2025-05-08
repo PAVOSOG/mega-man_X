@@ -453,7 +453,7 @@ void checkPlayerHealth(int damage, Sprite shape, bool isdead)
     damageTimer = 0;
 }
 
-void UpdateEnemies(float deltaTime, Screens& screen)
+void UpdateEnemies(float deltaTime, Screens& screen, Music& m_victory)
 {
     bool isWon = true;
     if (oldScreen != screen)
@@ -535,7 +535,7 @@ void UpdateEnemies(float deltaTime, Screens& screen)
     }
     if (isWon)
     {
-        cout << "You won" << endl;
+        m_victory.play();
         screen = Screens::Victory;
     }
 }

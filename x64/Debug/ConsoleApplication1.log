@@ -1,98 +1,13 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (ConsoleApplication1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  enemies.cpp
-C:\SFML Template\ConsoleApplication1\enemies.cpp(46,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(46,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(55,13): warning C4551: function call missing argument list
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,39): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,39): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,39): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,39): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,39): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,36): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,36): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,36): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,36): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(101,36): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,39): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,39): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,39): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,39): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,39): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,36): warning C4244: 'argument': conversion from 'int' to 'T', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,36): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,36): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,36): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(147,36): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(217,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(217,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,75): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,75): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,75): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,75): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,75): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,53): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,53): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,53): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,53): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(350,53): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,70): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,70): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,70): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,70): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,70): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,49): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,49): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,49): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,49): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(354,49): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,65): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,65): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,65): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,65): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,65): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,46): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,46): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,46): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,46): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(358,46): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,38): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,38): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,38): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,38): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,38): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,27): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,27): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,27): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,27): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(366,27): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,79): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,79): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,79): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,79): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,79): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,55): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,55): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,55): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,55): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(369,55): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,70): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,70): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,70): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,70): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,70): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,49): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,49): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,49): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,49): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(373,49): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,65): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,65): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,65): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,65): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,65): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244: 'argument': conversion from 'T' to 'int', possible loss of data
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:         ]
+  Main.cpp
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,82): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,82): warning C4244:         with
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,82): warning C4244:         [
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,82): warning C4244:             T=float
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,82): warning C4244:         ]
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,57): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,57): warning C4244:         with
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,57): warning C4244:         [
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,57): warning C4244:             T=float
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,57): warning C4244:         ]
   ConsoleApplication1.vcxproj -> C:\SFML Template\x64\Debug\SFML Template.exe

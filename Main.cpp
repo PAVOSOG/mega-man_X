@@ -7,7 +7,7 @@
 using namespace std;
 using namespace sf;
 
-RenderWindow window(sf::VideoMode(1680, 1050), "Mega Man");
+RenderWindow window(VideoMode::getDesktopMode(), "Mega Man", Style::Fullscreen);
 Texture Bg;
 Texture levelBg;
 Texture level2Bg;
@@ -16,7 +16,7 @@ Sprite level;
 Sprite level2;
 Sprite background;
 Texture healthBar;
-View camera1(Vector2f(0, 0), Vector2f(window.getSize().x, window.getSize().y));
+View camera1(Vector2f(0, 0), Vector2f(window.getSize().x*0.75, window.getSize().y*0.5));
 float gameOverTimer=0.0;
 void Update();
 void Draw();
@@ -31,6 +31,7 @@ float deltaTimeEnemy;
 Music musicLevel2;
 Music music;
 Music music_game_over;
+Music music_victory;
 
 int main() {
     Start();
@@ -79,6 +80,7 @@ void Start() {
     level2Bg.loadFromFile("playerAnimations/foreground2.png");
     music.openFromFile("playerAnimations/bg music.mp3");
     music_game_over.openFromFile("playerAnimations/gameover.mp3");
+    music_victory.openFromFile("playerAnimations/victory.mp3");
     musicLevel2.openFromFile("playerAnimations/level2.mp3");
     stopfont.loadFromFile("playerAnimations/main-menu-font.otf");
     healthBar.loadFromFile("playerAnimations/healthBar.png");
@@ -101,7 +103,7 @@ void Start() {
     musicLevel2.setVolume(50);
 
     HealthBarSprite.setScale(0.75, 0.75);
-    HealthBarSprite.setPosition(0, 0);
+    HealthBarSprite.setPosition(0, 500);
     HealthBarSprite.setTexture(healthBar);
 
     player.start(); 
@@ -113,9 +115,9 @@ void UpdateGamePlay() {
     std::cout << player.getPosition().x << " " << player.getPosition().y << endl;
     window.setView(camera1);
     player.update(deltaTime, camera1, screen);
-    camera1.setCenter({ player.getPosition().x> (float)window.getSize().x / 2? player.getPosition().x:window.getSize().x/2, (float)window.getSize().y / 2});
-    HealthBarSprite.setPosition(camera1.getCenter()-Vector2f(750,500));
-    UpdateEnemies(deltaTimeEnemy, screen);
+    camera1.setCenter({ player.getPosition().x> (float)window.getSize().x / 2? player.getPosition().x:window.getSize().x/2, (float)window.getSize().y / 2-250});
+    HealthBarSprite.setPosition(camera1.getCenter()-Vector2f(750,100));
+    UpdateEnemies(deltaTimeEnemy, screen, music_victory);
     if (player.isDead){
         screen = Screens::GameOver;
         music.stop();
@@ -145,7 +147,7 @@ void DrawGamePlay() {
     window.draw(HealthBarSprite);
     RectangleShape MissingHealth;
     MissingHealth.setFillColor(Color::Black);
-    MissingHealth.setPosition(camera1.getCenter() - Vector2f(691, 468));
+    MissingHealth.setPosition(camera1.getCenter() - Vector2f(691, 73));
     MissingHealth.setSize({35,(float(6-player.health)/6*150)});
     window.draw(MissingHealth);
     player.draw(window); 
@@ -187,6 +189,8 @@ void DrawPauseMenu() {
 
 void DrawVictory() {
     DrawGamePlay();
+    music.pause();
+    musicLevel2.pause();
     
     RectangleShape overlay(Vector2f(window.getSize()));
     overlay.setFillColor(Color(0, 128, 0, 128));

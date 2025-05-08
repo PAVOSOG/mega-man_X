@@ -1,4 +1,23 @@
-﻿  enemies.cpp
+﻿  Main.cpp
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:         with
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:         [
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:             T=unsigned int
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:         ]
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:         and
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:         [
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:             T=float
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,75): warning C4244:         ]
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:         with
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:         [
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:             T=unsigned int
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:         ]
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:         and
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:         [
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:             T=float
+C:\SFML Template\ConsoleApplication1\Main.cpp(19,55): warning C4244:         ]
+  enemies.cpp
 C:\SFML Template\ConsoleApplication1\enemies.cpp(46,30): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\SFML Template\ConsoleApplication1\enemies.cpp(46,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\SFML Template\ConsoleApplication1\enemies.cpp(55,13): warning C4551: function call missing argument list
@@ -94,33 +113,13 @@ C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:        
 C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:         [
 C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:             T=float
 C:\SFML Template\ConsoleApplication1\enemies.cpp(377,46): warning C4244:         ]
-  Main.cpp
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:             T=unsigned int
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:         and
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,75): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:         with
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:             T=unsigned int
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:         ]
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:         and
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:         [
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:             T=float
-C:\SFML Template\ConsoleApplication1\Main.cpp(17,55): warning C4244:         ]
   player.cpp
-C:\SFML Template\ConsoleApplication1\player.cpp(51,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\player.cpp(51,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\player.cpp(73,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\player.cpp(73,31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\SFML Template\ConsoleApplication1\player.cpp(79,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\SFML Template\ConsoleApplication1\player.cpp(57,39): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\SFML Template\ConsoleApplication1\player.cpp(57,27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\SFML Template\ConsoleApplication1\player.cpp(79,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\SFML Template\ConsoleApplication1\player.cpp(79,31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  screen.cpp
+C:\SFML Template\ConsoleApplication1\player.cpp(85,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\SFML Template\ConsoleApplication1\player.cpp(85,31): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 enemies.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static class sf::RenderStates const sf::RenderStates::Default" (__imp_?Default@RenderStates@sf@@2V12@B)
 enemies.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static class sf::Color const sf::Color::White" (__imp_?White@Color@sf@@2V12@B)
 enemies.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: float __cdecl sf::CircleShape::getRadius(void)const " (__imp_?getRadius@CircleShape@sf@@QEBAMXZ)
@@ -173,6 +172,7 @@ Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) publ
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: bool __cdecl sf::Image::loadFromFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (__imp_?loadFromFile@Image@sf@@QEAA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::Image::~Image(void)" (__imp_??1Image@sf@@QEAA@XZ)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::Image::Image(void)" (__imp_??0Image@sf@@QEAA@XZ)
+Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static class sf::Color const sf::Color::Black" (__imp_?Black@Color@sf@@2V12@B)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::Window::display(void)" (__imp_?display@Window@sf@@QEAAXXZ)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::Window::setFramerateLimit(unsigned int)" (__imp_?setFramerateLimit@Window@sf@@QEAAXI@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: virtual void __cdecl sf::Window::close(void)" (__imp_?close@Window@sf@@UEAAXXZ)
@@ -182,6 +182,7 @@ Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) publ
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::RenderTarget::setView(class sf::View const &)" (__imp_?setView@RenderTarget@sf@@QEAAXAEBVView@2@@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::RenderTarget::clear(class sf::Color const &)" (__imp_?clear@RenderTarget@sf@@QEAAXAEBVColor@2@@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::String::String(char const *,class std::locale const &)" (__imp_??0String@sf@@QEAA@PEBDAEBVlocale@std@@@Z)
+Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::RectangleShape::setSize(class sf::Vector2<float> const &)" (__imp_?setSize@RectangleShape@sf@@QEAAXAEBV?$Vector2@M@2@@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::RectangleShape::RectangleShape(class sf::Vector2<float> const &)" (__imp_??0RectangleShape@sf@@QEAA@AEBV?$Vector2@M@1@@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::VideoMode::VideoMode(unsigned int,unsigned int,unsigned int)" (__imp_??0VideoMode@sf@@QEAA@III@Z)
 Main.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: bool __cdecl sf::Music::openFromFile(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (__imp_?openFromFile@Music@sf@@QEAA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z)
@@ -206,4 +207,4 @@ screen.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) pu
 screen.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::Text::setFont(class sf::Font const &)" (__imp_?setFont@Text@sf@@QEAAXAEBVFont@2@@Z)
 screen.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __cdecl sf::Text::setString(class sf::String const &)" (__imp_?setString@Text@sf@@QEAAXAEBVString@2@@Z)
 screen.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __cdecl sf::Text::Text(void)" (__imp_??0Text@sf@@QEAA@XZ)
-C:\SFML Template\x64\Release\SFML Template.exe : fatal error LNK1120: 85 unresolved externals
+C:\SFML Template\x64\Release\SFML Template.exe : fatal error LNK1120: 87 unresolved externals
